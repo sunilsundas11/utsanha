@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>I Love You Babe 💘</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+    html, body {
+      margin: 0; padding: 0;
+      font-family: 'Pacifico', cursive;
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+      height: 100vh;
+      overflow: hidden;
+      color: #ff1493;
+      text-align: center;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .heart {
+      font-size: 80px;
+      animation: beat 1s infinite;
+      margin-top: 30px;
+    }
+
+    @keyframes beat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin: 0.5em 0;
+      text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493;
+    }
+
+    #message {
+      font-size: 1.4rem;
+      white-space: pre-line;
+      margin: 1.5em auto;
+      max-width: 90%;
+      min-height: 160px;
+    }
+
+    #yesBtn {
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      color: white;
+      background-color: #ff69b4;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(255, 105, 180, 0.5);
+      transition: 0.3s;
+      display: none;
+    }
+
+    #yesBtn:hover {
+      background-color: #ff1493;
+    }
+
+    #musicBtn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-family: 'Pacifico', cursive;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+  <button id="musicBtn">🔊 Pause Music</button>
+
+  <div class="heart">❤️</div>
+  <h1>I Love You Babe 💌</h1>
+  <div id="message"></div>
+  <button id="yesBtn" onclick="celebrate()">YES 💞</button>
+
+  <canvas id="confetti-canvas"></canvas>
+
+  <audio id="bgMusic" autoplay loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7e7ed62d39.mp3?filename=romantic-love-story-112194.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    const lines = [
+      "Hi Babe 💖",
+      "This isn't just a page...",
+      "It's a piece of my heart, in code.",
+      "You make life feel magical ✨",
+      "And I just wanted to say...",
+      "I Love You. Truly. Deeply. Forever. 💘",
+      "Will you be mine?"
+    ];
+
+    const quotes = [
+      "“In your smile I see something more beautiful than stars.”",
+      "“You are the poem I never knew how to write.”",
+      "“With you, every moment is a fairytale.”",
+      "“I love you more with every heartbeat.”"
+    ];
+
+    const msgDiv = document.getElementById('message');
+    const yesBtn = document.getElementById('yesBtn');
+    const musicBtn = document.getElementById('musicBtn');
+    const bgMusic = document.getElementById('bgMusic');
+    let quoteIndex = 0;
+
+    let line = 0;
+    let char = 0;
+
+    function typeWriter() {
+      if (line < lines.length) {
+        if (char < lines[line].length) {
+          msgDiv.innerHTML += lines[line].charAt(char);
+          char++;
+          setTimeout(typeWriter, 50);
+        } else {
+          msgDiv.innerHTML += '\n';
+          char = 0;
+          line++;
+          setTimeout(typeWriter, 500);
+        }
+      } else {
+        yesBtn.style.display = 'inline-block';
+        startQuoteLoop();
+      }
+    }
+
+    function startQuoteLoop() {
+      setInterval(() => {
+        msgDiv.innerText = quotes[quoteIndex];
+        quoteIndex = (quoteIndex + 1) % quotes.length;
+      }, 4000);
+    }
+
+    function celebrate() {
+      msgDiv.innerHTML = "Yay!! 💍 You said YES! 💖\nI’m the luckiest person alive.";
+      yesBtn.style.display = 'none';
+      confetti({
+        particleCount: 300,
+        spread: 120,
+        origin: { y: 0.6 }
+      });
+    }
+
+    musicBtn.addEventListener('click', () => {
+      if (bgMusic.paused) {
+        bgMusic.play();
+        musicBtn.textContent = '🔊 Pause Music';
+      } else {
+        bgMusic.pause();
+        musicBtn.textContent = '🔈 Play Music';
+      }
+    });
+
+    window.onload = () => {
+      typeWriter();
+    };
+  </script>
+
+</body>
+</html>
